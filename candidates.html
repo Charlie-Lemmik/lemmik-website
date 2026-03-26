@@ -378,27 +378,29 @@
     </footer>
 
     <script>
-        // Handle form submission with EmailJS
+        // Handle form submission with EmailJS first, then Formspree
         document.addEventListener('DOMContentLoaded', function() {
-            const candidateForm = document.getElementById('candidateForm');
-            candidateForm.addEventListener('submit', function(e) {
-                // Get form values
-                const firstName = candidateForm.querySelector('input[name="FirstName"]').value;
-                const lastName = candidateForm.querySelector('input[name="LastName"]').value;
-                const email = candidateForm.querySelector('input[name="email"]').value;
-                const name = firstName + ' ' + lastName;
+            document.getElementById('candidateForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var firstName = document.querySelector('[name="FirstName"]').value;
+                var lastName = document.querySelector('[name="LastName"]').value;
+                var email = document.querySelector('[name="email"]').value;
+                var name = firstName + ' ' + lastName;
                 
-                // Send EmailJS confirmation
                 emailjs.send('service_til8ppj', 'template_3tg1q3i', {
                     name: name,
                     email: email
-                }).then(function(response) {
-                    console.log('EmailJS confirmation sent successfully:', response);
-                }, function(error) {
-                    console.error('EmailJS confirmation failed:', error);
+                }).then(function() {
+                    console.log('EmailJS sent');
                 });
 
-                // Let the form continue to submit to Formspree normally
+                fetch('https://formspree.io/f/xjgpvdod', {
+                    method: 'POST',
+                    body: new FormData(document.getElementById('candidateForm')),
+                    headers: { 'Accept': 'application/json' }
+                }).then(function() {
+                    window.location.href = 'https://lemmikrecruiting.com/thanks.html';
+                });
             });
         });
     </script>

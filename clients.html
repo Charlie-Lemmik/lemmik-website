@@ -441,24 +441,26 @@
                 dateField.value = formattedDate;
             }
 
-            // Handle form submission with EmailJS
-            const clientForm = document.getElementById('clientForm');
-            clientForm.addEventListener('submit', function(e) {
-                // Get form values
-                const name = clientForm.querySelector('input[name="name"]').value;
-                const email = clientForm.querySelector('input[name="email"]').value;
+            // Handle form submission with EmailJS first, then Formspree
+            document.getElementById('clientForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var name = document.querySelector('[name="name"]').value;
+                var email = document.querySelector('[name="email"]').value;
                 
-                // Send EmailJS confirmation
                 emailjs.send('service_til8ppj', 'template_wdt1syl', {
                     name: name,
                     email: email
-                }).then(function(response) {
-                    console.log('EmailJS confirmation sent successfully:', response);
-                }, function(error) {
-                    console.error('EmailJS confirmation failed:', error);
+                }).then(function() {
+                    console.log('EmailJS sent');
                 });
 
-                // Let the form continue to submit to Formspree normally
+                fetch('https://formspree.io/f/mreogvlr', {
+                    method: 'POST',
+                    body: new FormData(document.getElementById('clientForm')),
+                    headers: { 'Accept': 'application/json' }
+                }).then(function() {
+                    window.location.href = 'https://lemmikrecruiting.com/thanks.html';
+                });
             });
         });
     </script>
