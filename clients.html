@@ -362,6 +362,17 @@
                         <textarea name="details" rows="4" class="w-full p-3 border border-gray-300 rounded focus:border-blue-500 focus:outline-none" placeholder="Tell us more about the role, location, specific requirements, or anything else that would help us find the right candidate..."></textarea>
                     </div>
 
+                    <div>
+                        <label class="block text-slate-700 font-bold mb-2">Upload Job Description</label>
+                        <input type="file" name="job_description" accept=".pdf,.doc,.docx,.txt" class="w-full p-3 border border-gray-300 rounded focus:border-blue-500 focus:outline-none bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <p class="text-sm text-gray-500 mt-2">Accepted formats: PDF, Word (.doc, .docx), Text (.txt) — Max 10MB</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-slate-700 font-bold mb-2">Or Paste Job Description Here</label>
+                        <textarea name="job_description_text" rows="6" class="w-full p-3 border border-gray-300 rounded focus:border-blue-500 focus:outline-none" placeholder="Paste your job description, requirements, or any details about the role you need to fill..."></textarea>
+                    </div>
+
                     <!-- Agreement Section -->
                     <div class="bg-slate-50 p-6 rounded-lg border-2 border-slate-200">
                         <h4 class="text-lg font-bold text-slate-900 mb-4">Agreement & Signature</h4>
