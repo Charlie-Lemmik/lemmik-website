@@ -15,6 +15,10 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">emailjs.init("pbT30scjAc2stpQo1");</script>
+
     <style>
         body { font-family: 'Roboto', sans-serif; }
         h1, h2, h3, h4, .btn-font { font-family: 'Montserrat', sans-serif; }
@@ -285,7 +289,7 @@
             </div>
 
             <div class="bg-white text-slate-800 p-8 rounded-xl shadow-lg">
-                <form action="https://formspree.io/f/mreogvlr" method="POST" class="space-y-6">
+                <form action="https://formspree.io/f/mreogvlr" method="POST" class="space-y-6" id="clientForm">
                     <input type="hidden" name="_autoresponse" value="Thank you for reaching out to Lemmik Recruiting! We've received your inquiry and will be in touch within 1 business day. - The Lemmik Team">
                     <input type="hidden" name="_subject" value="We received your inquiry - Lemmik Recruiting">
                     <div class="grid md:grid-cols-2 gap-6">
@@ -436,6 +440,26 @@
                 const formattedDate = today.toISOString().split('T')[0];
                 dateField.value = formattedDate;
             }
+
+            // Handle form submission with EmailJS
+            const clientForm = document.getElementById('clientForm');
+            clientForm.addEventListener('submit', function(e) {
+                // Get form values
+                const name = clientForm.querySelector('input[name="name"]').value;
+                const email = clientForm.querySelector('input[name="email"]').value;
+                
+                // Send EmailJS confirmation
+                emailjs.send('service_til8ppj', 'template_wdt1syl', {
+                    name: name,
+                    email: email
+                }).then(function(response) {
+                    console.log('EmailJS confirmation sent successfully:', response);
+                }, function(error) {
+                    console.error('EmailJS confirmation failed:', error);
+                });
+
+                // Let the form continue to submit to Formspree normally
+            });
         });
     </script>
 
