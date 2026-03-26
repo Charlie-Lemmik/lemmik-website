@@ -387,19 +387,25 @@
                 var email = document.querySelector('[name="email"]').value;
                 var name = firstName + ' ' + lastName;
                 
+                console.log('Sending EmailJS with:', { name: name, email: email });
+                
                 emailjs.send('service_til8ppj', 'template_3tg1q3i', {
                     name: name,
                     email: email
+                }).then(function(response) {
+                    console.log('EmailJS sent successfully:', response);
+                    
+                    // Only submit to Formspree after EmailJS succeeds
+                    return fetch('https://formspree.io/f/xjgpvdod', {
+                        method: 'POST',
+                        body: new FormData(document.getElementById('candidateForm')),
+                        headers: { 'Accept': 'application/json' }
+                    });
                 }).then(function() {
-                    console.log('EmailJS sent');
-                });
-
-                fetch('https://formspree.io/f/xjgpvdod', {
-                    method: 'POST',
-                    body: new FormData(document.getElementById('candidateForm')),
-                    headers: { 'Accept': 'application/json' }
-                }).then(function() {
+                    console.log('Formspree submitted successfully');
                     window.location.href = 'https://lemmikrecruiting.com/thanks.html';
+                }).catch(function(error) {
+                    console.error('Error in submission process:', error);
                 });
             });
         });
