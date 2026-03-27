@@ -416,20 +416,18 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            "records": [{
-                                "fields": {
-                                    "Name": firstName + ' ' + lastName,
-                                    "FirstName": firstName,
-                                    "LastName": lastName,
-                                    "Email": email,
-                                    "Phone": phone,
-                                    "Role": role,
-                                    "Salary": salary ? parseInt(salary) : null,
-                                    "Summary": summary,
-                                    "LinkedIn": linkedin,
-                                    "Source": "Website Form"
-                                }
-                            }]
+                            "fields": {
+                                "Name": firstName + ' ' + lastName,
+                                "FirstName": firstName,
+                                "LastName": lastName,
+                                "Email": email,
+                                "Phone": phone,
+                                "Role": role,
+                                "Salary": salary ? parseInt(salary) : null,
+                                "Summary": summary,
+                                "LinkedIn": linkedin,
+                                "Source": "Website Form"
+                            }
                         })
                     }).then(function(response) {
                         console.log('Airtable API response status:', response.status);
@@ -466,20 +464,18 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            "records": [{
-                                "fields": {
-                                    "Name": firstName + ' ' + lastName,
-                                    "FirstName": firstName,
-                                    "LastName": lastName,
-                                    "Email": email,
-                                    "Phone": phone,
-                                    "Role": role,
-                                    "Salary": salary ? parseInt(salary) : null,
-                                    "Summary": summary,
-                                    "LinkedIn": linkedin,
-                                    "Source": "Website Form"
-                                }
-                            }]
+                            "fields": {
+                                "Name": firstName + ' ' + lastName,
+                                "FirstName": firstName,
+                                "LastName": lastName,
+                                "Email": email,
+                                "Phone": phone,
+                                "Role": role,
+                                "Salary": salary ? parseInt(salary) : null,
+                                "Summary": summary,
+                                "LinkedIn": linkedin,
+                                "Source": "Website Form"
+                            }
                         })
                     }).then(function(response) {
                         console.log('Airtable API response status:', response.status);
