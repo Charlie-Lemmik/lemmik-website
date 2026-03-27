@@ -306,6 +306,7 @@
                 <form action="https://formspree.io/f/xjgpvdod" method="POST" class="space-y-6" id="candidateForm">
                     <input type="hidden" name="_autoresponse" value="Thank you for joining the Lemmik Recruiting network! We've received your profile and will reach out when we have a relevant opportunity. - The Lemmik Team">
                     <input type="hidden" name="_subject" value="We received your profile - Lemmik Recruiting">
+                    <input type="hidden" name="_next" value="https://lemmikrecruiting.com/thanks.html">
                     <div class="grid md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-slate-700 font-bold mb-2">First Name</label>
@@ -378,10 +379,11 @@
     </footer>
 
     <script>
-        // Handle form submission with EmailJS first, then Formspree
+        // Handle form submission with EmailJS first, then native form submission
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('candidateForm').addEventListener('submit', function(e) {
                 e.preventDefault();
+                var form = document.getElementById('candidateForm');
                 var firstName = document.querySelector('[name="FirstName"]').value;
                 var lastName = document.querySelector('[name="LastName"]').value;
                 var email = document.querySelector('[name="email"]').value;
@@ -395,17 +397,12 @@
                 }).then(function(response) {
                     console.log('EmailJS sent successfully:', response);
                     
-                    // Only submit to Formspree after EmailJS succeeds
-                    return fetch('https://formspree.io/f/xjgpvdod', {
-                        method: 'POST',
-                        body: new FormData(document.getElementById('candidateForm')),
-                        headers: { 'Accept': 'application/json' }
-                    });
-                }).then(function() {
-                    console.log('Formspree submitted successfully');
-                    window.location.href = 'https://lemmikrecruiting.com/thanks.html';
+                    // Now submit the form natively to allow Formspree → Airtable integration
+                    form.submit();
                 }).catch(function(error) {
-                    console.error('Error in submission process:', error);
+                    console.error('EmailJS failed:', error);
+                    // Still submit to Formspree even if EmailJS fails
+                    form.submit();
                 });
             });
         });
