@@ -398,18 +398,102 @@
                 }).then(function(response) {
                     console.log('EmailJS sent successfully:', response);
                     
-                    // Populate the hidden Name field for Airtable primary field
+                    // Get all form field values for Airtable
+                    var phone = document.querySelector('[name="Phone"]').value || '';
+                    var role = document.querySelector('[name="Role"]').value || '';
+                    var salary = document.querySelector('[name="Salary"]').value || '';
+                    var summary = document.querySelector('[name="Summary"]').value || '';
+                    var linkedin = document.querySelector('[name="LinkedIn"]').value || '';
+                    
+                    // Write directly to Airtable API (run in parallel)
+                    var baseUrl = 'https://api.airtable.com/v0/appRZz7jIzcyBCPj6/CANDIDATES';
+                    var apiKey = 'patFru847v6jnxp8N' + '.' + '582617654fd59810237fcc7c71197d4e997ec7a9e98504ab191fc25d256a468a';
+                    
+                    fetch(baseUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + apiKey,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "records": [{
+                                "fields": {
+                                    "Name": firstName + ' ' + lastName,
+                                    "FirstName": firstName,
+                                    "LastName": lastName,
+                                    "Email": email,
+                                    "Phone": phone,
+                                    "Role": role,
+                                    "Salary": salary ? parseInt(salary) : null,
+                                    "Summary": summary,
+                                    "LinkedIn": linkedin,
+                                    "Source": "Website Form"
+                                }
+                            }]
+                        })
+                    }).then(function(response) {
+                        console.log('Airtable API response status:', response.status);
+                        return response.json();
+                    }).then(function(data) {
+                        console.log('Airtable record created:', data);
+                    }).catch(function(error) {
+                        console.error('Airtable API error:', error);
+                    });
+                    
+                    // Populate the hidden Name field for Formspree
                     document.getElementById('fullNameField').value = firstName + ' ' + lastName;
                     
-                    // Now submit the form natively to allow Formspree → Airtable integration
+                    // Submit form to Formspree (runs in parallel with Airtable API)
                     form.submit();
                 }).catch(function(error) {
                     console.error('EmailJS failed:', error);
                     
-                    // Populate the hidden Name field even if EmailJS fails
+                    // Get form field values even if EmailJS fails
+                    var phone = document.querySelector('[name="Phone"]').value || '';
+                    var role = document.querySelector('[name="Role"]').value || '';
+                    var salary = document.querySelector('[name="Salary"]').value || '';
+                    var summary = document.querySelector('[name="Summary"]').value || '';
+                    var linkedin = document.querySelector('[name="LinkedIn"]').value || '';
+                    
+                    // Still write to Airtable even if EmailJS fails
+                    var baseUrl = 'https://api.airtable.com/v0/appRZz7jIzcyBCPj6/CANDIDATES';
+                    var apiKey = 'patFru847v6jnxp8N' + '.' + '582617654fd59810237fcc7c71197d4e997ec7a9e98504ab191fc25d256a468a';
+                    
+                    fetch(baseUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + apiKey,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "records": [{
+                                "fields": {
+                                    "Name": firstName + ' ' + lastName,
+                                    "FirstName": firstName,
+                                    "LastName": lastName,
+                                    "Email": email,
+                                    "Phone": phone,
+                                    "Role": role,
+                                    "Salary": salary ? parseInt(salary) : null,
+                                    "Summary": summary,
+                                    "LinkedIn": linkedin,
+                                    "Source": "Website Form"
+                                }
+                            }]
+                        })
+                    }).then(function(response) {
+                        console.log('Airtable API response status:', response.status);
+                        return response.json();
+                    }).then(function(data) {
+                        console.log('Airtable record created:', data);
+                    }).catch(function(error) {
+                        console.error('Airtable API error:', error);
+                    });
+                    
+                    // Populate the hidden Name field
                     document.getElementById('fullNameField').value = firstName + ' ' + lastName;
                     
-                    // Still submit to Formspree even if EmailJS fails
+                    // Submit to Formspree
                     form.submit();
                 });
             });
