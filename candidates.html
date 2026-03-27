@@ -307,6 +307,7 @@
                     <input type="hidden" name="_autoresponse" value="Thank you for joining the Lemmik Recruiting network! We've received your profile and will reach out when we have a relevant opportunity. - The Lemmik Team">
                     <input type="hidden" name="_subject" value="We received your profile - Lemmik Recruiting">
                     <input type="hidden" name="_next" value="https://lemmikrecruiting.com/thanks.html">
+                    <input type="hidden" name="Name" id="fullNameField">
                     <div class="grid md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-slate-700 font-bold mb-2">First Name</label>
@@ -397,10 +398,17 @@
                 }).then(function(response) {
                     console.log('EmailJS sent successfully:', response);
                     
+                    // Populate the hidden Name field for Airtable primary field
+                    document.getElementById('fullNameField').value = firstName + ' ' + lastName;
+                    
                     // Now submit the form natively to allow Formspree → Airtable integration
                     form.submit();
                 }).catch(function(error) {
                     console.error('EmailJS failed:', error);
+                    
+                    // Populate the hidden Name field even if EmailJS fails
+                    document.getElementById('fullNameField').value = firstName + ' ' + lastName;
+                    
                     // Still submit to Formspree even if EmailJS fails
                     form.submit();
                 });
